@@ -1,21 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import { Providers } from "@/components/providers";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
+import { Navbar } from "@/components/layout/navbar";
+import { CommandPalette } from "@/components/layout/command-palette";
+import { Footer } from "@/components/layout/footer";
+import { Toaster } from "@/components/ui/toast";
+import { SpotlightTracker } from "@/components/ui/spotlight-tracker";
 import { profile } from "@/content/profile";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
-  display: "swap",
-});
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap" });
 
 const description = `${profile.name} — ${profile.role}. ${profile.intro}`;
 
@@ -24,19 +21,14 @@ export const metadata: Metadata = {
   title: { default: `${profile.name} — Portfolio`, template: `%s — ${profile.name}` },
   description,
   authors: [{ name: profile.name }],
-  openGraph: {
-    type: "website",
-    title: `${profile.name} — Portfolio`,
-    description,
-    siteName: profile.name,
-  },
+  openGraph: { type: "website", title: `${profile.name} — Portfolio`, description, siteName: profile.name },
   twitter: { card: "summary_large_image", title: `${profile.name} — Portfolio`, description },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2efe9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0e0d" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
+    { media: "(prefers-color-scheme: dark)", color: "#08080a" },
   ],
 };
 
@@ -53,11 +45,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${instrument.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${bricolage.variable}`}>
       <body className="min-h-dvh antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a
@@ -66,12 +54,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <Providers>
-          <Header />
-          <main id="main">{children}</main>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <Navbar />
+          <main id="main" className="relative isolate">
+            {children}
+          </main>
           <Footer />
-        </Providers>
-        <div className="grain" aria-hidden />
+          <CommandPalette />
+          <Toaster />
+          <SpotlightTracker />
+        </ThemeProvider>
       </body>
     </html>
   );

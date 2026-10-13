@@ -224,8 +224,21 @@ export const projects: Project[] = [
     ],
     sections: [
       {
+        heading: "The idea",
+        body: "A video call between two people shouldn’t need an account, a database or a company in the middle. WebSpace is a small app where you pick a name and a room ID, share it with a friend, and talk.",
+      },
+      {
         heading: "How it works",
         body: "Socket.IO joins users to a room and relays the WebRTC handshake: one browser sends an SDP offer, the other answers, and ICE candidates are exchanged until a direct path is found. After that, audio and video never touch the server.",
+        bullets: [
+          "The server only handles signalling, chat and room membership",
+          "Typing indicators and connection status keep both sides informed",
+          "Screen sharing swaps the outgoing video track without renegotiating the call",
+        ],
+      },
+      {
+        heading: "What I learned",
+        body: "Networking is full of edge cases — permissions, NAT traversal, one side joining before the other. Getting a reliable call working taught me to think in events and states rather than in pages.",
       },
     ],
   },
@@ -245,8 +258,22 @@ export const projects: Project[] = [
     highlights: ["Information-dense dashboard that stays readable", "Priority tags, presence and quick actions"],
     sections: [
       {
-        heading: "Focus",
-        body: "An exercise in hierarchy: lots of information on one screen, with spacing and type doing the work instead of borders and colour.",
+        heading: "The brief",
+        body: "Internal tools are often cluttered. I set out to fit an entire team’s day — conversations, tasks, people and support — on one screen without it feeling crowded.",
+      },
+      {
+        heading: "What’s on the screen",
+        body: "Eight panels, each answering one question at a glance.",
+        bullets: [
+          "Quick chat, channels and a call centre for conversations",
+          "A task board with priority tags and due dates",
+          "Today’s activity feed and who’s online right now",
+          "Support shortcuts, plus a modal to request a private chat",
+        ],
+      },
+      {
+        heading: "What I learned",
+        body: "Hierarchy beats decoration: consistent spacing, a small type scale and one accent colour did more for readability than any border or shadow.",
       },
     ],
   },
@@ -266,6 +293,15 @@ export const projects: Project[] = [
     highlights: ["Live search", "Expandable cards with sample code", "Dark/light mode", "Mobile to desktop"],
     sections: [
       {
+        heading: "The idea",
+        body: "Beginners often ask “which language should I learn?”. CodeAtlas answers with a searchable set of cards — what each language is for, where it’s used, and a short sample of what its code looks like.",
+      },
+      {
+        heading: "How it works",
+        body: "Plain HTML, CSS and JavaScript: cards expand in place to reveal details and sample code, the search filters as you type, and a theme toggle switches between light and dark.",
+        bullets: ["Responsive from phone to desktop", "No frameworks — just the DOM and events"],
+      },
+      {
         heading: "Why it matters",
         body: "This is where JavaScript clicked — state, events and the DOM working together for the first time.",
       },
@@ -284,7 +320,16 @@ export const projects: Project[] = [
     stack: ["HTML", "CSS"],
     links: { code: "https://github.com/AtulSwain/Superman---Fanmade" },
     highlights: ["Layered hero composition", "Glass navigation", "Typographic hierarchy"],
-    sections: [{ heading: "Focus", body: "Practising composition and atmosphere with nothing but HTML and CSS." }],
+    sections: [
+      {
+        heading: "The idea",
+        body: "A cinematic, magazine-style page about Superman: origin story, powers and abilities, films and shows — using nothing but HTML and CSS.",
+      },
+      {
+        heading: "Design",
+        body: "A floating glass navigation bar, a layered hero with the emblem, and organised sections for core powers and sensory abilities. The challenge was atmosphere: depth from layering and light instead of heavy effects.",
+      },
+    ],
   },
   {
     slug: "cr7",
@@ -295,10 +340,25 @@ export const projects: Project[] = [
     category: "Frontend",
     role: "Design & frontend",
     palette: ["#0b0b0b", "#d4af37"],
-    stack: ["HTML", "CSS", "JavaScript"],
+    stack: ["HTML", "Tailwind CSS", "JavaScript"],
     links: { code: "https://github.com/AtulSwain/CR7-Fan-made" },
     highlights: ["Career timeline", "Animated stats", "Intro loader"],
-    sections: [{ heading: "Focus", body: "Storytelling with numbers — an early hint of where my interests were heading." }],
+    sections: [
+      {
+        heading: "The idea",
+        body: "A tribute to Cristiano Ronaldo told through his career and his numbers — an early hint of where my interests were heading.",
+      },
+      {
+        heading: "What’s inside",
+        body: "A loading intro, then the story in chapters.",
+        bullets: [
+          "A career timeline: Sporting CP, Manchester United, Real Madrid, Juventus, Al-Nassr",
+          "“The Impossible Numbers” — records presented as stats",
+          "“The Cabinet” — Ballon d’Or, Champions League and Golden Shoe honours",
+          "Scroll-revealed sections built with Tailwind CSS",
+        ],
+      },
+    ],
   },
   {
     slug: "profile-card",
@@ -313,7 +373,12 @@ export const projects: Project[] = [
     stack: ["HTML", "CSS"],
     links: { code: "https://github.com/AtulSwain/Hover-Profile-page-for-Beginner-" },
     highlights: ["Hover states", "Centered card layout"],
-    sections: [{ heading: "Focus", body: "Learning how small transitions change how an interface feels." }],
+    sections: [
+      {
+        heading: "Focus",
+        body: "A single profile card with a soft hover interaction. Small, but it’s where I learned how much transitions, shadows and spacing change how an interface feels.",
+      },
+    ],
   },
   {
     slug: "hello-world",
@@ -328,7 +393,12 @@ export const projects: Project[] = [
     stack: ["HTML", "CSS"],
     links: { code: "https://github.com/AtulSwain/first-css-code-Hello-World" },
     highlights: ["Gradient background", "Centered layout", "No frameworks, no JavaScript"],
-    sections: [{ heading: "Why it’s here", body: "Every journey needs a first step. This was mine." }],
+    sections: [
+      {
+        heading: "Why it’s here",
+        body: "Every journey needs a first step. This was mine: an Instagram-style post built with pure HTML and CSS — centred layout, gradient background, and a lot of trial and error.",
+      },
+    ],
   },
 ];
 

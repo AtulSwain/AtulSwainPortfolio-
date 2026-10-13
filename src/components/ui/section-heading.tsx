@@ -1,36 +1,37 @@
 import { cn } from "@/lib/utils";
-import { MaskText, Reveal } from "./reveal";
 
 export function SectionHeading({
-  index,
   label,
   title,
   intro,
+  aside,
+  center,
   className,
 }: {
-  index: string;
   label: string;
-  title: string;
+  title: React.ReactNode;
   intro?: string;
+  aside?: React.ReactNode;
+  center?: boolean;
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-6 md:grid-cols-12", className)}>
-      <Reveal className="flex items-center gap-3 md:col-span-3">
-        <span className="font-mono text-[11px] text-accent">{index}</span>
-        <span className="h-px w-8 bg-line" />
-        <span className="eyebrow">{label}</span>
-      </Reveal>
-      <div className="md:col-span-9">
-        <h2 className="display text-[clamp(44px,7vw,104px)] leading-[0.92]">
-          <MaskText text={title} />
-        </h2>
-        {intro && (
-          <Reveal delay={0.15}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-2">{intro}</p>
-          </Reveal>
-        )}
+    <header
+      className={cn(
+        "reveal flex flex-wrap items-end justify-between gap-6",
+        center && "flex-col items-center text-center",
+        className,
+      )}
+    >
+      <div className={cn("max-w-2xl", center && "mx-auto")}>
+        <p className="pill">
+          <span className="size-1.5 rounded-full bg-accent" />
+          {label}
+        </p>
+        <h2 className="display mt-5 text-[clamp(36px,5vw,64px)]">{title}</h2>
+        {intro && <p className="mt-4 text-[17px] leading-relaxed text-fg-2">{intro}</p>}
       </div>
-    </div>
+      {aside}
+    </header>
   );
 }

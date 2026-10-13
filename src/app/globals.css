@@ -2,31 +2,39 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------- Design tokens ---------- */
+/* ---------- Design tokens ----------
+   Dark-first "night studio" palette, with a light mode. */
 :root {
-  --bg: #f2efe9;
-  --bg-elev: #f8f6f2;
-  --bg-sunk: #e9e5dd;
-  --fg: #151413;
-  --fg-2: #4f4c47;
-  --fg-3: #8b877f;
-  --line: #dcd7cd;
-  --accent: #b4532a;
-  --accent-ink: #fff8f2;
-  --grain-opacity: 0.05;
+  --bg: #fafaf9;
+  --bg-elev: #ffffff;
+  --bg-sunk: #f2f2f0;
+  --fg: #0c0c0e;
+  --fg-2: #4a4a52;
+  --fg-3: #8b8b94;
+  --line: rgb(12 12 14 / 0.09);
+  --line-strong: rgb(12 12 14 / 0.16);
+  --accent: #6d5dfc;
+  --accent-2: #0ea5a4;
+  --accent-ink: #ffffff;
+  --glow: rgb(109 93 252 / 0.14);
+  --dot: rgb(12 12 14 / 0.07);
+  --shadow: 0 1px 2px rgb(12 12 14 / 0.04), 0 8px 24px -12px rgb(12 12 14 / 0.12);
 }
-
 .dark {
-  --bg: #0e0e0d;
-  --bg-elev: #161614;
-  --bg-sunk: #0a0a09;
-  --fg: #ede9e1;
-  --fg-2: #aaa59b;
-  --fg-3: #6f6b64;
-  --line: #262522;
-  --accent: #e8895b;
-  --accent-ink: #1a0f09;
-  --grain-opacity: 0.07;
+  --bg: #08080a;
+  --bg-elev: #111114;
+  --bg-sunk: #0c0c0f;
+  --fg: #ededf0;
+  --fg-2: #a1a1aa;
+  --fg-3: #6b6b75;
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.15);
+  --accent: #9b8cff;
+  --accent-2: #5eead4;
+  --accent-ink: #0b0820;
+  --glow: rgb(139 124 255 / 0.18);
+  --dot: rgb(255 255 255 / 0.06);
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 20px 40px -24px rgb(0 0 0 / 0.8);
 }
 
 @theme inline {
@@ -37,28 +45,29 @@
   --color-fg-2: var(--fg-2);
   --color-fg-3: var(--fg-3);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
   --color-accent-ink: var(--accent-ink);
 
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-display: var(--font-bricolage), var(--font-geist), ui-sans-serif, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 /* ---------- Base ---------- */
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
   }
   body {
     @apply bg-bg text-fg font-sans;
-    font-feature-settings: "ss01", "cv11";
   }
   ::selection {
     background: var(--accent);
@@ -67,97 +76,172 @@
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 8px;
+  }
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(6px);
   }
 }
 
 /* ---------- Utilities ---------- */
-@utility container-x {
-  width: 100%;
-  max-width: 1320px;
-  margin-inline: auto;
-  padding-inline: clamp(16px, 4vw, 48px);
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
 }
-
 @utility eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-3);
 }
-
-@utility display {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 0.95;
+@utility gradient-text {
+  background: linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  padding: 6px 12px;
+  font-size: 12.5px;
+  color: var(--fg-2);
+}
+@utility kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--fg-2);
+  background: var(--bg-sunk);
+}
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+@utility container-page {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
 }
 
-@utility hairline {
-  border-color: var(--line);
-}
-
-/* Paper grain — subtle texture that makes flat colour feel printed. */
-.grain {
+/* Background: dot grid fading out from the top + a soft glow. */
+.backdrop {
   pointer-events: none;
-  position: fixed;
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 900px;
+  z-index: -1;
+  background:
+    radial-gradient(60% 50% at 50% 0%, var(--glow), transparent 70%),
+    radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0) 0 0 / 24px 24px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent);
+}
+
+/* Spotlight: a soft light that follows the cursor inside a card. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
   inset: 0;
-  z-index: 60;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), var(--glow), transparent 60%);
 }
-.dark .grain {
-  mix-blend-mode: screen;
+.spotlight:hover::before { opacity: 1; }
+
+/* Gradient hairline border */
+.ring-gradient {
+  position: relative;
+}
+.ring-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 60%, transparent), transparent 40%, transparent 60%, color-mix(in srgb, var(--accent-2) 50%, transparent));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
-/* Lenis smooth scrolling */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-/* Underline that draws in on hover */
 .link-draw {
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
   background-position: 0 100%;
   background-repeat: no-repeat;
-  transition: background-size 0.5s var(--ease-out-expo);
+  transition: background-size 0.4s var(--ease-out-expo);
 }
 .link-draw:hover,
-.link-draw:focus-visible {
-  background-size: 100% 1px;
-}
+.link-draw:focus-visible { background-size: 100% 1px; }
 
-/* Marquee */
+/* ---------- Motion (CSS only, progressive) ----------
+   Content is always visible; supporting browsers fade it in on scroll. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+}
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+}
 @keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
+  to { transform: translateX(-50%); }
 }
-.marquee-track {
-  animation: marquee 45s linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, #22c55e 55%, transparent); }
+  100% { box-shadow: 0 0 0 8px transparent; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
+@media (prefers-reduced-motion: no-preference) {
+  .enter { animation: rise 0.8s var(--ease-out-expo) both; }
+  .enter-1 { animation-delay: 70ms; }
+  .enter-2 { animation-delay: 140ms; }
+  .enter-3 { animation-delay: 210ms; }
+  .enter-4 { animation-delay: 280ms; }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+    .bar-grow {
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
   }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
+
+  .marquee-track { animation: marquee 50s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .live-dot { animation: pulse-ring 1.8s ease-out infinite; }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 0.3s; }
 }
