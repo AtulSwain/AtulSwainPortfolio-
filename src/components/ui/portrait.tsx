@@ -8,12 +8,10 @@ type Props = {
   className?: string;
   priority?: boolean;
   sizes?: string;
-  /** Keep the 4:5 shape (default). Set false to fill the parent's height instead. */
-  fixedRatio?: boolean;
 };
 
-/** Arched portrait frame. Shows your photo, or a monogram until you add one. */
-export function Portrait({ src, name, className, priority, sizes = "(min-width: 1024px) 28vw, 70vw", fixedRatio = true }: Props) {
+/** Your photo, or a monogram until you add one at public/images/profile/photo.jpg. */
+export function Portrait({ src, name, className, priority, sizes = "(min-width: 1024px) 380px, 90vw" }: Props) {
   const initials = name
     .split(" ")
     .map((w) => w[0])
@@ -21,31 +19,18 @@ export function Portrait({ src, name, className, priority, sizes = "(min-width: 
     .slice(0, 2);
 
   return (
-    <div
-      className={cn(
-        "relative overflow-hidden",
-        fixedRatio && "aspect-[4/5]",
-        " rounded-t-[999px] rounded-b-[28px] bg-bg-sunk ring-1 ring-line",
-        className,
-      )}
-    >
+    <div className={cn("relative overflow-hidden bg-bg-sunk", className)}>
       {src ? (
-        <Image
-          src={asset(src)}
-          alt={`Portrait of ${name}`}
-          fill
-          priority={priority}
-          sizes={sizes}
-          className="object-cover"
-        />
+        <Image src={asset(src)} alt={`Portrait of ${name}`} fill priority={priority} sizes={sizes} className="object-cover" />
       ) : (
-        <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(120%_80%_at_50%_0%,color-mix(in_srgb,var(--accent)_22%,transparent),transparent_70%)]">
-          <svg viewBox="0 0 200 200" className="absolute inset-0 size-full text-line" aria-hidden>
-            {Array.from({ length: 9 }).map((_, i) => (
-              <circle key={i} cx="100" cy="100" r={14 + i * 14} fill="none" stroke="currentColor" strokeWidth="0.4" />
-            ))}
-          </svg>
-          <span className="display relative text-[clamp(64px,9vw,128px)] italic text-fg" aria-label={name}>
+        <div
+          className="absolute inset-0 grid place-items-center"
+          style={{
+            background:
+              "radial-gradient(80% 60% at 20% 10%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 60%), radial-gradient(70% 60% at 90% 100%, color-mix(in srgb, var(--accent-2) 28%, transparent), transparent 60%)",
+          }}
+        >
+          <span className="display text-[clamp(56px,7vw,96px)] text-fg/90" aria-label={name}>
             {initials}
           </span>
         </div>

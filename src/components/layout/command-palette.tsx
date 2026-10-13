@@ -3,13 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, AtSign, Copy, FolderOpen, ExternalLink, Hash, Palette, Search, SunMoon } from "lucide-react";
+import { ArrowRight, AtSign, Copy, FolderOpen, ExternalLink, Hash, Search, SunMoon } from "lucide-react";
 import { projects } from "@/content/projects";
 import { profile } from "@/content/profile";
 import { sections } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { copyText } from "../ui/toast";
-import { accents, setAccent } from "../ui/theme-controls";
 
 type Item = {
   id: string;
@@ -52,6 +51,7 @@ export function CommandPalette() {
         icon: <Hash size={15} />,
         run: go(s.href),
       })),
+      { id: "s-top", group: "Go to", label: "Top of page", icon: <Hash size={15} />, run: go("/#top") },
       { id: "s-all", group: "Go to", label: "All work", hint: "/work", icon: <FolderOpen size={15} />, run: go("/work/") },
       ...projects.map((p) => ({
         id: `p-${p.slug}`,
@@ -83,13 +83,6 @@ export function CommandPalette() {
         icon: <SunMoon size={15} />,
         run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
       },
-      ...accents.map((a) => ({
-        id: `a-accent-${a.id}`,
-        group: "Actions" as const,
-        label: `Accent colour: ${a.label}`,
-        icon: <Palette size={15} style={{ color: a.swatch }} />,
-        run: () => setAccent(a.id),
-      })),
       ...profile.socials.map((s) => ({
         id: `a-${s.label}`,
         group: "Actions" as const,

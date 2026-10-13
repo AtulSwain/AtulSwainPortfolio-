@@ -33,7 +33,7 @@ export function ProjectCover({ project, src, className, sizes = "(min-width: 102
 
   return (
     <div
-      className={cn("relative overflow-hidden", className)}
+      className={cn("@container relative overflow-hidden", className)}
       style={{
         background: `radial-gradient(90% 70% at 85% 15%, ${tone}55, transparent 60%), radial-gradient(70% 60% at 10% 100%, ${tone}33, transparent 70%), ${base}`,
       }}
@@ -53,8 +53,8 @@ export function ProjectCover({ project, src, className, sizes = "(min-width: 102
           <span>{project.year}</span>
         </div>
         <div>
-          <p className="display text-[clamp(32px,6vw,84px)] leading-[0.9] text-white">{project.title}</p>
-          {detailed && <p className="mt-4 max-w-md text-sm text-white/70">{project.tagline}</p>}
+          <p className="display text-[11cqw] leading-[0.95] text-white">{project.title}</p>
+          {detailed && <p className="mt-[2cqw] max-w-md text-[max(12px,1.8cqw)] text-white/70">{project.tagline}</p>}
         </div>
       </div>
       <div

@@ -4,7 +4,7 @@ My personal portfolio: who I am, what I've built, the journey so far, data scien
 
 **Stack:** Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS 4 · next-themes · Playwright
 
-**Features:** sidebar layout · bento intro · project explorer with live preview · swipeable journey reel · notebook-style data science section · ⌘K / `/` command palette · ←/→ between case studies · light/dark + 4 accent colours · CSS-only scroll animations (content never depends on JavaScript)
+**Features:** dark-first design with light mode · floating nav · hero with profile card · services, principles and stats · featured projects in browser frames · timeline · data-science case studies · skills with a usage chart computed from your projects · ⌘K / `/` command palette · ←/→ between case studies · CSS-only scroll animations (content never depends on JavaScript)
 
 ## Run it
 
@@ -28,7 +28,7 @@ All content lives in `src/content/`. You never need to touch components to chang
 
 | What | Where |
 |---|---|
-| Name, intro, about text, stats, socials, email, availability | `src/content/profile.ts` → `profile` |
+| Name, intro, about text, stats, services, principles, socials, email, availability | `src/content/profile.ts` → `profile` |
 | Skills / toolkit | `src/content/profile.ts` → `skills` |
 | Journey timeline | `src/content/profile.ts` → `journey` |
 | Education & what you're studying | `src/content/profile.ts` → `education`, `studying` |
@@ -74,8 +74,8 @@ Import the repo on vercel.com — no settings needed. Set `NEXT_PUBLIC_SITE_URL`
 src/
   app/                 routes: home, /work, /work/[slug], 404, sitemap, robots
   components/
-    layout/            sidebar, mobile bar, command palette, footer
-    home/              intro bento, work explorer, journey reel, notebook, education, contact
+    layout/            navbar (+ mobile menu), command palette, footer
+    home/              hero, about, work, journey, data science, skills, education, contact
     work/              archive browser (filter + grid/list), case-study keyboard paging
     ui/                building blocks (portrait, covers, clock, toast, theme controls…)
   content/             ← everything you edit

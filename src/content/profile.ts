@@ -47,6 +47,31 @@ export const profile: Profile = {
     { label: "Open to", value: "Internships · Freelance · Collabs" },
   ],
 
+  services: [
+    {
+      title: "Full-stack web apps",
+      body: "Fast, accessible interfaces backed by clean APIs — from a one-page tool to a role-based app with real-time features.",
+      tools: ["React", "Next.js", "TypeScript", "FastAPI", "Flask", "Node.js"],
+    },
+    {
+      title: "AI-powered tools",
+      body: "Practical AI features with guardrails: prompts that are tested, answers that cite their sources, and agents built as graphs you can reason about.",
+      tools: ["Claude API", "LangChain", "LangGraph", "Prompt engineering"],
+    },
+    {
+      title: "Data analysis & products",
+      body: "Turning messy data into numbers people can trust — cleaning, modelling and presenting it as a report, a chart or a working tool.",
+      tools: ["Python", "pandas", "NumPy", "SQL", "yfinance"],
+    },
+  ],
+
+  principles: [
+    { title: "Start with the question", body: "Understand the decision someone needs to make before writing code or touching data." },
+    { title: "Show your working", body: "Every number should say where it came from. Every claim should be checkable." },
+    { title: "Keep it simple", body: "The best tool fits how people already work — a small business doesn’t need a database server." },
+    { title: "Ship, then improve", body: "Put something real in front of people early, then make it better with what you learn." },
+  ],
+
   socials: [
     { label: "GitHub", href: "https://github.com/AtulSwain", handle: "@AtulSwain" },
     // Uncomment and fill in:

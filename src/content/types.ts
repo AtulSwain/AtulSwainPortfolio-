@@ -38,6 +38,10 @@ export type Profile = {
   about: string[];
   pullQuote: string;
   facts: { label: string; value: string }[];
+  /** What you do — shown as "services" cards. */
+  services: { title: string; body: string; tools: string[] }[];
+  /** How you like to work. */
+  principles: { title: string; body: string }[];
   socials: Social[];
   stats: Stat[];
   resume?: string;

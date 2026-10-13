@@ -50,22 +50,33 @@ test("command palette opens with / and navigates to a project", async ({ page })
   await expect(page.locator("h1")).toHaveText("InvestIQ");
 });
 
-test("accent colour choice persists across reloads", async ({ page, isMobile }) => {
-  test.skip(isMobile, "accent swatches live in the desktop sidebar");
-  await page.goto("/");
-  await page.getByRole("radio", { name: "Cobalt" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-accent", "cobalt");
-  await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-accent", "cobalt");
-});
-
-test("work explorer filters by category", async ({ page }) => {
+test("theme toggle switches to light and remembers it", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  const work = page.locator("#work");
-  await work.getByRole("button", { name: /^AI/ }).click();
-  const rows = work.locator("a[data-row]");
-  await expect(rows).toHaveCount(projects.filter((p) => p.category === "AI").length);
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.getByRole("button", { name: "Toggle light and dark theme" }).click();
+  await expect(page.locator("html")).not.toHaveClass(/dark/);
+  await page.reload();
+  await expect(page.locator("html")).not.toHaveClass(/dark/);
+});
+
+test("home links to every project's case study", async ({ page }) => {
+  await page.goto("/");
+  for (const p of projects) {
+    await expect(page.locator(`#work a[href="/work/${p.slug}/"]`).first()).toBeAttached();
+  }
+});
+
+test("mobile menu opens and jumps to a section", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "mobile-only menu");
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Open menu" }).click();
+  const menu = page.getByRole("dialog", { name: "Menu" });
+  await expect(menu).toBeVisible();
+  await menu.getByRole("link", { name: /Education/ }).click();
+  await expect(menu).toBeHidden();
+  await expect(page).toHaveURL(/#education$/);
 });
 
 test("arrow keys flip between case studies", async ({ page, isMobile }) => {

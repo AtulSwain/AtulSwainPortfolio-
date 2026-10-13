@@ -12,17 +12,22 @@ export default function WorkPage() {
   const items = projects.map((p) => ({ project: p, cover: existing(p.cover) }));
 
   return (
-    <div className="pt-10 pb-24 lg:pt-16">
-      <header className="enter">
-        <p className="eyebrow flex items-center gap-3">
-          Archive <span className="h-px w-6 bg-line" /> <span className="text-accent">{projects.length} projects</span>
-        </p>
-        <h1 className="display mt-5 text-[clamp(56px,9vw,128px)] leading-[0.9]">All work</h1>
-        <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">
-          From my first CSS page to production software. Filter by type, or switch between grid and list.
-        </p>
-      </header>
-      <WorkBrowser items={items} categories={categories} />
+    <div className="relative pt-32 pb-24 md:pt-40">
+      <div className="backdrop" aria-hidden />
+      <div className="container-page">
+        <header className="enter">
+          <p className="pill">
+            <span className="size-1.5 rounded-full bg-accent" /> Archive · {projects.length} projects
+          </p>
+          <h1 className="display mt-6 text-[clamp(48px,7vw,88px)]">
+            Everything I’ve <span className="gradient-text">built</span>
+          </h1>
+          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">
+            From my first CSS page to production software. Filter by type, or switch between grid and list.
+          </p>
+        </header>
+        <WorkBrowser items={items} categories={categories} />
+      </div>
     </div>
   );
 }

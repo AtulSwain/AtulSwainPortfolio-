@@ -2,11 +2,12 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="grid min-h-[75dvh] place-items-center py-20 text-center">
+    <div className="relative grid min-h-[80dvh] place-items-center px-4 pt-28 pb-20 text-center">
+      <div className="backdrop" aria-hidden />
       <div>
         <p className="eyebrow">Error 404</p>
-        <h1 className="display mt-6 text-[clamp(64px,11vw,160px)] leading-[0.88]">
-          Lost <em className="text-accent">the plot.</em>
+        <h1 className="display mt-6 text-[clamp(56px,10vw,128px)]">
+          Lost <span className="gradient-text">the plot.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-md text-fg-2">
           This page doesn’t exist. Press <kbd className="kbd">/</kbd> to search, or head back home.

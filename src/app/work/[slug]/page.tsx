@@ -8,6 +8,7 @@ import { existing, publicFileExists } from "@/lib/assets";
 import { asset, pad } from "@/lib/utils";
 import { ProjectCover } from "@/components/ui/project-cover";
 import { PagerKeys } from "@/components/work/pager-keys";
+import { BrowserFrame } from "@/components/ui/browser-frame";
 
 export const dynamicParams = false;
 
@@ -48,7 +49,9 @@ export default async function ProjectPage({ params }: Props) {
   ];
 
   return (
-    <article className="pt-8 pb-10 lg:pt-12">
+    <article className="relative pt-32 pb-16 md:pt-36">
+      <div className="backdrop" aria-hidden />
+      <div className="container-page">
       <PagerKeys prev={`/work/${prev.slug}/`} next={`/work/${next.slug}/`} />
 
       {/* Breadcrumb */}
@@ -69,12 +72,12 @@ export default async function ProjectPage({ params }: Props) {
       {/* Title + spec sheet */}
       <header className="mt-10 grid gap-10 lg:grid-cols-12">
         <div className="enter enter-1 lg:col-span-7">
-          <p className="eyebrow text-accent!">{project.category}</p>
-          <h1 className="display mt-4 text-[clamp(52px,8vw,112px)] leading-[0.9]">{project.title}</h1>
-          <p className="display mt-6 text-[clamp(24px,2.4vw,32px)] leading-[1.15] text-fg-2">{project.tagline}</p>
+          <p className="pill"><span className="size-1.5 rounded-full bg-accent" />{project.category} · {project.year}</p>
+          <h1 className="display mt-6 text-[clamp(48px,7vw,96px)]">{project.title}</h1>
+          <p className="mt-5 text-[clamp(20px,2vw,26px)] leading-snug text-fg-2">{project.tagline}</p>
         </div>
 
-        <aside className="card enter enter-2 self-end p-6 lg:col-span-5">
+        <aside className="panel enter enter-2 self-end p-6 lg:col-span-5">
           <dl className="divide-y divide-line text-[14px]">
             {spec.map(([k, v]) => (
               <div key={k} className="grid grid-cols-[80px_1fr] gap-4 py-2.5 first:pt-0">
@@ -109,18 +112,25 @@ export default async function ProjectPage({ params }: Props) {
       </header>
 
       {/* Cover */}
-      <div className="enter enter-3 mt-12 overflow-hidden rounded-[24px] ring-1 ring-line">
-        <ProjectCover project={project} src={cover} detailed className="aspect-[16/10]" sizes="(min-width: 1024px) 1060px, 100vw" priority />
+      <div className="enter enter-3 relative mt-12">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-x-10 -inset-y-10 -z-10 opacity-70 blur-2xl"
+          style={{ background: `radial-gradient(60% 50% at 50% 50%, ${project.palette[1]}40, transparent 70%)` }}
+        />
+        <BrowserFrame url={project.links.live ?? project.links.code} className="shadow-2xl">
+          <ProjectCover project={project} src={cover} detailed className="aspect-[16/10]" sizes="(min-width: 1200px) 1120px, 100vw" priority />
+        </BrowserFrame>
       </div>
 
       {/* Summary + metrics */}
       <section className="reveal mt-16 grid gap-10 lg:grid-cols-12">
-        <p className="display text-[clamp(26px,2.6vw,36px)] leading-[1.2] lg:col-span-7">{project.summary}</p>
+        <p className="font-display text-[clamp(22px,2.2vw,30px)] leading-[1.3] font-medium tracking-tight lg:col-span-7">{project.summary}</p>
         {project.metrics && (
           <dl className="grid grid-cols-3 gap-px self-start overflow-hidden rounded-2xl border border-line bg-line lg:col-span-5">
             {project.metrics.map((m) => (
               <div key={m.label} className="bg-bg-elev p-5">
-                <dd className="display text-5xl leading-none">{m.value}</dd>
+                <dd className="display text-[44px] leading-none gradient-text">{m.value}</dd>
                 <dt className="mt-2 text-[12px] leading-snug text-fg-3">{m.label}</dt>
               </div>
             ))}
@@ -133,7 +143,7 @@ export default async function ProjectPage({ params }: Props) {
         <p className="eyebrow">Highlights</p>
         <ol className="mt-5 grid gap-3 sm:grid-cols-2">
           {project.highlights.map((h, i) => (
-            <li key={h} className="card flex gap-4 p-5">
+            <li key={h} className="panel flex gap-4 p-5">
               <span className="font-mono text-[11px] text-accent">{pad(i + 1)}</span>
               <span className="text-[15.5px] leading-relaxed">{h}</span>
             </li>
@@ -182,21 +192,22 @@ export default async function ProjectPage({ params }: Props) {
 
       {/* Pager */}
       <nav aria-label="More projects" className="mt-24 grid gap-4 sm:grid-cols-2">
-        <Link href={`/work/${prev.slug}/`} className="card group p-6 transition-colors hover:border-fg-3">
+        <Link href={`/work/${prev.slug}/`} className="panel group p-6 spotlight transition-colors hover:border-line-strong">
           <span className="eyebrow flex items-center gap-2">
             <ArrowLeft size={13} className="transition-transform group-hover:-translate-x-1" /> Previous
           </span>
-          <span className="display mt-3 block text-4xl">{prev.title}</span>
+          <span className="display mt-3 block text-[30px]">{prev.title}</span>
           <span className="mt-1 block text-[14px] text-fg-3">{prev.tagline}</span>
         </Link>
-        <Link href={`/work/${next.slug}/`} className="card group p-6 text-right transition-colors hover:border-fg-3">
+        <Link href={`/work/${next.slug}/`} className="panel group p-6 text-right spotlight transition-colors hover:border-line-strong">
           <span className="eyebrow flex items-center justify-end gap-2">
             Next <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
           </span>
-          <span className="display mt-3 block text-4xl">{next.title}</span>
+          <span className="display mt-3 block text-[30px]">{next.title}</span>
           <span className="mt-1 block text-[14px] text-fg-3">{next.tagline}</span>
         </Link>
       </nav>
+      </div>
     </article>
   );
 }

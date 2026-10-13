@@ -1,25 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { MobileBar, Sidebar } from "@/components/layout/sidebar";
+import { Navbar } from "@/components/layout/navbar";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toast";
-import { accentScript } from "@/components/ui/theme-controls";
+import { SpotlightTracker } from "@/components/ui/spotlight-tracker";
 import { profile } from "@/content/profile";
-import { existing } from "@/lib/assets";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
-  display: "swap",
-});
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap" });
 
 const description = `${profile.name} — ${profile.role}. ${profile.intro}`;
 
@@ -34,8 +27,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2efe9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0e0d" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
+    { media: "(prefers-color-scheme: dark)", color: "#08080a" },
   ],
 };
 
@@ -51,13 +44,8 @@ const jsonLd = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const photo = existing(profile.photo);
-
   return (
-    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${instrument.variable}`}>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: accentScript }} />
-      </head>
+    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${bricolage.variable}`}>
       <body className="min-h-dvh antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a
@@ -66,21 +54,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="lg:grid lg:grid-cols-[var(--sidebar)_1fr]">
-            <Sidebar photo={photo} />
-            <div className="min-w-0">
-              <MobileBar photo={photo} />
-              <main id="main" className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-12">
-                {children}
-              </main>
-              <Footer />
-            </div>
-          </div>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <Navbar />
+          <main id="main" className="relative isolate">
+            {children}
+          </main>
+          <Footer />
           <CommandPalette />
           <Toaster />
+          <SpotlightTracker />
         </ThemeProvider>
-        <div className="grain" aria-hidden />
       </body>
     </html>
   );
