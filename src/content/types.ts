@@ -14,6 +14,10 @@ export type Profile = {
   firstName: string;
   /** Short line under your name in the hero. */
   role: string;
+  /** Very short role shown in the sidebar. */
+  shortRole: string;
+  /** What you're up to right now — shown in the "Now" card. */
+  now: string[];
   /** Words that rotate in the hero headline. */
   roles: string[];
   location: string;

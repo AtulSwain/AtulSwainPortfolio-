@@ -8,10 +8,12 @@ type Props = {
   className?: string;
   priority?: boolean;
   sizes?: string;
+  /** Keep the 4:5 shape (default). Set false to fill the parent's height instead. */
+  fixedRatio?: boolean;
 };
 
 /** Arched portrait frame. Shows your photo, or a monogram until you add one. */
-export function Portrait({ src, name, className, priority, sizes = "(min-width: 1024px) 28vw, 70vw" }: Props) {
+export function Portrait({ src, name, className, priority, sizes = "(min-width: 1024px) 28vw, 70vw", fixedRatio = true }: Props) {
   const initials = name
     .split(" ")
     .map((w) => w[0])
@@ -21,7 +23,9 @@ export function Portrait({ src, name, className, priority, sizes = "(min-width: 
   return (
     <div
       className={cn(
-        "relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[28px] bg-bg-sunk ring-1 ring-line",
+        "relative overflow-hidden",
+        fixedRatio && "aspect-[4/5]",
+        " rounded-t-[999px] rounded-b-[28px] bg-bg-sunk ring-1 ring-line",
         className,
       )}
     >

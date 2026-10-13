@@ -2,7 +2,9 @@
 
 My personal portfolio: who I am, what I've built, the journey so far, data science work and education.
 
-**Stack:** Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS 4 · Motion · Lenis · next-themes
+**Stack:** Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS 4 · next-themes · Playwright
+
+**Features:** sidebar layout · bento intro · project explorer with live preview · swipeable journey reel · notebook-style data science section · ⌘K / `/` command palette · ←/→ between case studies · light/dark + 4 accent colours · CSS-only scroll animations (content never depends on JavaScript)
 
 ## Run it
 
@@ -10,8 +12,13 @@ My personal portfolio: who I am, what I've built, the journey so far, data scien
 npm install
 npm run dev        # http://localhost:3000
 npm run build      # static site in ./out
-npm run lint       # type-check
+npm start          # serve ./out at http://localhost:4173
+npm run typecheck
+npm test           # Playwright browser tests (build first)
+npm run check      # all of the above
 ```
+
+The first time you run tests: `npx playwright install chromium`.
 
 Needs Node 20.9 or newer.
 
@@ -53,7 +60,8 @@ Put a PDF at `public/resume.pdf` and set `resume: "/resume.pdf"` in `profile.ts`
 
 ### GitHub Pages (included)
 
-`.github/workflows/deploy.yml` builds and deploys on every push to `main`.
+`.github/workflows/deploy.yml` type-checks, builds and runs the browser tests on every push and pull request.
+Pushes to `main` that pass are deployed. A broken change never goes live.
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 ### Vercel
@@ -66,10 +74,12 @@ Import the repo on vercel.com — no settings needed. Set `NEXT_PUBLIC_SITE_URL`
 src/
   app/                 routes: home, /work, /work/[slug], 404, sitemap, robots
   components/
-    sections/          home page sections (hero, about, journey, work, data, education, contact)
-    work/              project cards, index list with hover preview, filterable grid
-    ui/                building blocks (reveal animations, portrait, covers, theme toggle…)
+    layout/            sidebar, mobile bar, command palette, footer
+    home/              intro bento, work explorer, journey reel, notebook, education, contact
+    work/              archive browser (filter + grid/list), case-study keyboard paging
+    ui/                building blocks (portrait, covers, clock, toast, theme controls…)
   content/             ← everything you edit
   lib/                 helpers
 public/images/         photos and project screenshots
+tests/                 Playwright tests (every page, mobile + desktop, palette, filters, no-JS)
 ```

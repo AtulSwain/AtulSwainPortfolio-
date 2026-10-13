@@ -1,8 +1,9 @@
-name: Deploy to GitHub Pages
+name: Check & deploy
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -11,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,18 +24,30 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - id: pages
-        uses: actions/configure-pages@v5
       - run: npm ci
+      - run: npm run typecheck
+
+      # Build and test exactly what visitors get (served from the site root).
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
+      # Rebuild for the GitHub Pages sub-path and publish (main only).
+      - id: pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+      - if: github.ref == 'refs/heads/main'
+        run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
-      - uses: actions/upload-pages-artifact@v3
+      - if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:

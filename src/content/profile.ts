@@ -9,7 +9,13 @@ export const profile: Profile = {
   name: "Atul Swain",
   firstName: "Atul",
   role: "Web developer & AI prompt engineer, moving into data science",
+  shortRole: "Developer · AI · Data",
   roles: ["web apps", "AI tools", "data stories", "real-time systems"],
+  now: [
+    "Building multi-agent tools with LangGraph",
+    "Learning statistics & machine learning",
+    "Writing up my first data science case study",
+  ],
   location: "Mumbai, India",
   timeZone: "Asia/Kolkata",
   email: "swainatul785@gmail.com",

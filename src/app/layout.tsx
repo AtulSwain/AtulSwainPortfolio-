@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import { Providers } from "@/components/providers";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { ThemeProvider } from "next-themes";
+import { MobileBar, Sidebar } from "@/components/layout/sidebar";
+import { CommandPalette } from "@/components/layout/command-palette";
+import { Footer } from "@/components/layout/footer";
+import { Toaster } from "@/components/ui/toast";
+import { accentScript } from "@/components/ui/theme-controls";
 import { profile } from "@/content/profile";
+import { existing } from "@/lib/assets";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -24,12 +28,7 @@ export const metadata: Metadata = {
   title: { default: `${profile.name} — Portfolio`, template: `%s — ${profile.name}` },
   description,
   authors: [{ name: profile.name }],
-  openGraph: {
-    type: "website",
-    title: `${profile.name} — Portfolio`,
-    description,
-    siteName: profile.name,
-  },
+  openGraph: { type: "website", title: `${profile.name} — Portfolio`, description, siteName: profile.name },
   twitter: { card: "summary_large_image", title: `${profile.name} — Portfolio`, description },
 };
 
@@ -52,12 +51,13 @@ const jsonLd = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const photo = existing(profile.photo);
+
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${instrument.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${instrument.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: accentScript }} />
+      </head>
       <body className="min-h-dvh antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a
@@ -66,11 +66,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <Providers>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-        </Providers>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <div className="lg:grid lg:grid-cols-[var(--sidebar)_1fr]">
+            <Sidebar photo={photo} />
+            <div className="min-w-0">
+              <MobileBar photo={photo} />
+              <main id="main" className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-12">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </div>
+          <CommandPalette />
+          <Toaster />
+        </ThemeProvider>
         <div className="grain" aria-hidden />
       </body>
     </html>

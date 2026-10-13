@@ -14,8 +14,8 @@
   --accent: #b4532a;
   --accent-ink: #fff8f2;
   --grain-opacity: 0.05;
+  --sidebar: 296px;
 }
-
 .dark {
   --bg: #0e0e0d;
   --bg-elev: #161614;
@@ -28,6 +28,14 @@
   --accent-ink: #1a0f09;
   --grain-opacity: 0.07;
 }
+
+/* Accent "inks" the visitor can choose (set on <html data-accent>). */
+[data-accent="cobalt"] { --accent: #2f55c7; --accent-ink: #f3f6ff; }
+.dark[data-accent="cobalt"] { --accent: #87a3ff; --accent-ink: #0b1230; }
+[data-accent="forest"] { --accent: #2f6b4a; --accent-ink: #f1fbf5; }
+.dark[data-accent="forest"] { --accent: #79c79b; --accent-ink: #0a1d13; }
+[data-accent="plum"] { --accent: #7a3b78; --accent-ink: #fdf3fd; }
+.dark[data-accent="plum"] { --accent: #d495d2; --accent-ink: #220d21; }
 
 @theme inline {
   --color-bg: var(--bg);
@@ -45,7 +53,6 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 /* ---------- Base ---------- */
@@ -54,11 +61,14 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+  @media (min-width: 1024px) {
+    html { scroll-padding-top: 32px; }
   }
   body {
     @apply bg-bg text-fg font-sans;
-    font-feature-settings: "ss01", "cv11";
   }
   ::selection {
     background: var(--accent);
@@ -69,16 +79,13 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
+  dialog::backdrop {
+    background: color-mix(in srgb, var(--bg-sunk) 55%, transparent);
+    backdrop-filter: blur(6px);
+  }
 }
 
 /* ---------- Utilities ---------- */
-@utility container-x {
-  width: 100%;
-  max-width: 1320px;
-  margin-inline: auto;
-  padding-inline: clamp(16px, 4vw, 48px);
-}
-
 @utility eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -86,78 +93,103 @@
   text-transform: uppercase;
   color: var(--fg-3);
 }
-
 @utility display {
   font-family: var(--font-serif);
   font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 0.95;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+@utility card {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+}
+@utility kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--fg-2);
+  background: var(--bg);
+}
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }
 
-@utility hairline {
-  border-color: var(--line);
-}
-
-/* Paper grain — subtle texture that makes flat colour feel printed. */
+/* Paper grain */
 .grain {
   pointer-events: none;
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 70;
   opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
 }
-.dark .grain {
-  mix-blend-mode: screen;
-}
+.dark .grain { mix-blend-mode: screen; }
 
-/* Lenis smooth scrolling */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-/* Underline that draws in on hover */
 .link-draw {
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
   background-position: 0 100%;
   background-repeat: no-repeat;
-  transition: background-size 0.5s var(--ease-out-expo);
+  transition: background-size 0.45s var(--ease-out-expo);
 }
 .link-draw:hover,
-.link-draw:focus-visible {
-  background-size: 100% 1px;
+.link-draw:focus-visible { background-size: 100% 1px; }
+
+/* ---------- Motion (CSS only, progressive) ----------
+   Content is always visible. Browsers that support scroll-driven
+   animations get a gentle fade-up; nothing depends on JavaScript. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
 }
 
-/* Marquee */
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
+@media (prefers-reduced-motion: no-preference) {
+  .enter { animation: rise 0.9s var(--ease-out-expo) both; }
+  .enter-1 { animation-delay: 60ms; }
+  .enter-2 { animation-delay: 120ms; }
+  .enter-3 { animation-delay: 180ms; }
+  .enter-4 { animation-delay: 240ms; }
+  .enter-5 { animation-delay: 300ms; }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+    .draw path[data-draw] {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 45%;
+    }
   }
-}
-.marquee-track {
-  animation: marquee 45s linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 0.35s; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
+/* Time-of-day bar marker pulse */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pulse { animation: pulse-dot 2.4s ease-in-out infinite; }
 }
