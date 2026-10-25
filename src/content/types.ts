@@ -33,7 +33,18 @@ export type Profile = {
   photo: string;
   /** Optional second photo for the About section. Falls back to `photo`. */
   aboutPhoto?: string;
-  headline: { lead: string; emphasis: string; tail: string };
+  /** Hero headline. " / " starts a new line; wrap words in ~tildes~ to dim them. */
+  headline: string;
+  /** Small line above the headline. */
+  tagline: string;
+  /** "Currently focused on" text under the hero buttons. */
+  focus: string;
+  /** Quote shown over the hero artwork. */
+  heroQuote: string;
+  /** Quote card in the "More than just code" section. */
+  aboutQuote: string;
+  /** The four short steps in "More than just code". */
+  pillars: { title: string; body: string }[];
   intro: string;
   about: string[];
   pullQuote: string;
@@ -107,9 +118,20 @@ export type Project = {
   gallery?: ProjectImage[];
   stack: string[];
   links: { live?: string; code?: string };
+  /** Shown as a badge, e.g. "In active development" or "Private repository". */
+  status?: string;
   highlights: string[];
   metrics?: Stat[];
   sections: ProjectSection[];
+};
+
+export type LabItem = {
+  title: string;
+  body: string;
+  href: string;
+  /** Icon name: "chat" | "graph" | "chart" | "code" */
+  icon: "chat" | "graph" | "chart" | "code";
+  cta?: string;
 };
 
 export type DataStep = {

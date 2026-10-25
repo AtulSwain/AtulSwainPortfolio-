@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import { Geist, Geist_Mono, Sora } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { Footer } from "@/components/layout/footer";
@@ -12,7 +11,7 @@ import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
-const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap" });
+const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
 
 const description = `${profile.name} — ${profile.role}. ${profile.intro}`;
 
@@ -27,9 +26,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
-    { media: "(prefers-color-scheme: dark)", color: "#08080a" },
+    { color: "#070707" },
   ],
+  colorScheme: "dark",
 };
 
 const jsonLd = {
@@ -45,7 +44,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${bricolage.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${sora.variable}`}>
       <body className="min-h-dvh antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a
@@ -54,16 +53,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <Navbar />
-          <main id="main" className="relative isolate">
-            {children}
-          </main>
-          <Footer />
-          <CommandPalette />
-          <Toaster />
-          <SpotlightTracker />
-        </ThemeProvider>
+        <Navbar />
+        <main id="main" className="relative isolate">
+          {children}
+        </main>
+        <Footer />
+        <CommandPalette />
+        <Toaster />
+        <SpotlightTracker />
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );

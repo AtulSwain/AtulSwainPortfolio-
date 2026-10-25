@@ -25,13 +25,19 @@ export const profile: Profile = {
   photo: "/images/profile/photo.jpg",
   aboutPhoto: "/images/profile/about.jpg",
 
-  headline: {
-    lead: "I build",
-    emphasis: "thoughtful software",
-    tail: "and learn to read the data behind it.",
-  },
+  tagline: "Building at the intersection of AI, code and ideas",
+  headline: "~Turning~ Ideas / into ~Digital~ / Reality.",
   intro:
-    "I started with a single “Hello World” in CSS. Since then I’ve shipped real-time apps, invoicing software for a real business, and a stock-research terminal powered by data and AI.",
+    "I’m Atul Swain, a developer and AI enthusiast who builds web applications, intelligent tools, and digital experiences that solve real problems.",
+  focus: "Building AI tools, learning in public, and growing a stronger foundation in data science.",
+  heroQuote: "Technology is more powerful when it helps people.",
+  aboutQuote: "A curious mind and consistent effort can turn small ideas into something extraordinary.",
+  pillars: [
+    { title: "Build", body: "Turn ideas into real products." },
+    { title: "Learn", body: "Explore new technologies and AI." },
+    { title: "Share", body: "Write, teach and help the community." },
+    { title: "Grow", body: "Keep improving and take on bigger challenges." },
+  ],
 
   about: [
     "I like problems that sit between people and data — a shop owner who needs invoices that match the paper pad, an investor who wants to know why a stock moved, a student who learns better when a graph moves on screen.",
@@ -80,10 +86,10 @@ export const profile: Profile = {
   ],
 
   stats: [
-    { value: "14", label: "Public projects" },
+    { value: "13+", label: "Projects built" },
     { value: "47", label: "Lessons written" },
-    { value: "12", label: "Agent patterns animated" },
-    { value: "2024", label: "Wrote my first line" },
+    { value: "2024", label: "Coding since" },
+    { value: "AI", label: "Always learning" },
   ],
 
   // Put a PDF at public/resume.pdf and set this to "/resume.pdf" to show a résumé button.

@@ -34,7 +34,8 @@ test("content is visible without JavaScript", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.locator("h1")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Things I’ve built" })).toBeAttached();
+  await expect(page.getByRole("heading", { name: "Projects That Create Impact" })).toBeAttached();
+  await expect(page.getByRole("link", { name: /View Case Study/ })).toBeVisible();
   await context.close();
 });
 
@@ -50,21 +51,25 @@ test("command palette opens with / and navigates to a project", async ({ page })
   await expect(page.locator("h1")).toHaveText("InvestIQ");
 });
 
-test("theme toggle switches to light and remembers it", async ({ page }) => {
+test("home features the lead project and the archive lists every project", async ({ page }) => {
   await page.goto("/");
-  await page.waitForLoadState("networkidle");
-  await expect(page.locator("html")).toHaveClass(/dark/);
-  await page.getByRole("button", { name: "Toggle light and dark theme" }).click();
-  await expect(page.locator("html")).not.toHaveClass(/dark/);
-  await page.reload();
-  await expect(page.locator("html")).not.toHaveClass(/dark/);
+  const lead = projects.find((p) => p.featured)!;
+  await expect(page.getByRole("link", { name: /View Case Study/ })).toHaveAttribute("href", `/work/${lead.slug}/`);
+  await expect(page.locator("#projects a[href^='/work/']").first()).toBeVisible();
+  await page.goto("/work/");
+  for (const p of projects) {
+    await expect(page.locator(`main a[href="/work/${p.slug}/"]`).first()).toBeAttached();
+  }
 });
 
-test("home links to every project's case study", async ({ page }) => {
+test("project filter narrows the home grid", async ({ page }) => {
   await page.goto("/");
-  for (const p of projects) {
-    await expect(page.locator(`#work a[href="/work/${p.slug}/"]`).first()).toBeAttached();
-  }
+  await page.waitForLoadState("networkidle");
+  const grid = page.locator("#projects");
+  await grid.getByRole("button", { name: "Real-time", exact: true }).click();
+  await expect(grid.locator("ul a[href^='/work/']")).toHaveCount(
+    projects.filter((p) => p.category === "Real-time" && !p.featured).length,
+  );
 });
 
 test("mobile menu opens and jumps to a section", async ({ page, isMobile }) => {

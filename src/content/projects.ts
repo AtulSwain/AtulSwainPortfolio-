@@ -10,6 +10,59 @@ import type { Project } from "./types";
 
 export const projects: Project[] = [
   {
+    slug: "otakuva",
+    title: "OTAKUVA",
+    tagline: "Your personal anime life archive.",
+    summary:
+      "An editorial, cinematic home for the anime you watch, the people and studios behind it, and your own anime history — with discovery, schedules, a personal library, community threads and real-time chat.",
+    year: "2026",
+    category: "Full-stack",
+    role: "Product, design & engineering",
+    featured: true,
+    status: "In active development · private repo",
+    cover: "/images/projects/otakuva/cover.webp",
+    palette: ["#0b0b10", "#c8f04a"],
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Socket.IO", "JWT", "Cloudflare R2"],
+    links: {},
+    highlights: [
+      "Anime dossier pages: scene-backdrop hero, Vibe score breakdown, credits, cast, schedule and production timeline",
+      "Explore by type, genre, year, season, studio, score and rating; a full release schedule and calendar",
+      "Personal library (watching, completed, plan to watch…) with movies treated as first-class content",
+      "Community threads, 1:1 messages and a live chat room per anime title over Socket.IO",
+      "Data from Jikan (MyAnimeList) and AniList, normalised through an ingestion layer",
+    ],
+    metrics: [
+      { value: "2", label: "Data providers unified" },
+      { value: "8", label: "Core product areas" },
+      { value: "5", label: "Design principles" },
+    ],
+    sections: [
+      {
+        heading: "The idea",
+        body: "Not a streaming service and not another tracker dashboard. OTAKUVA combines a Letterboxd-style personal archive, MUBI’s editorial pacing and AniList’s depth of information — with its own visual language: restrained dark UI, row-based layouts instead of boxed cards, and artwork as the main visual anchor.",
+      },
+      {
+        heading: "Design principles",
+        body: "Every screen is built against five rules before anything else.",
+        bullets: [
+          "Content over containers",
+          "Information over decoration",
+          "Typography over borders",
+          "Spacing over UI chrome",
+          "Hierarchy over card density",
+        ],
+      },
+      {
+        heading: "Under the hood",
+        body: "Next.js App Router with TypeScript and CSS Modules, PostgreSQL through Prisma, JWT authentication, Socket.IO for real-time messaging and Cloudflare R2 for user media. Provider data from Jikan and AniList passes through an ingestion layer so every anime, studio, person, episode and news item is cross-linked — nothing is a dead end.",
+      },
+      {
+        heading: "What’s next",
+        body: "Finishing the row-based editorial redesign of the home page and anime dossier, personalised discovery (“because you watched…”), and moderation tools for public chat rooms.",
+      },
+    ],
+  },
+  {
     slug: "investiq",
     title: "InvestIQ",
     tagline: "A research terminal that shows its working.",
