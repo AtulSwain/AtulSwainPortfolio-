@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, AtSign, Copy, FolderOpen, ExternalLink, Hash, Search, SunMoon } from "lucide-react";
+import { ArrowRight, AtSign, Copy, FolderOpen, ExternalLink, Hash, Search } from "lucide-react";
 import { projects } from "@/content/projects";
 import { profile } from "@/content/profile";
 import { sections } from "@/lib/nav";
@@ -26,7 +25,6 @@ const isTyping = (el: EventTarget | null) =>
 
 export function CommandPalette() {
   const router = useRouter();
-  const { resolvedTheme, setTheme } = useTheme();
   const dialog = useRef<HTMLDialogElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
@@ -51,7 +49,6 @@ export function CommandPalette() {
         icon: <Hash size={15} />,
         run: go(s.href),
       })),
-      { id: "s-top", group: "Go to", label: "Top of page", icon: <Hash size={15} />, run: go("/#top") },
       { id: "s-all", group: "Go to", label: "All work", hint: "/work", icon: <FolderOpen size={15} />, run: go("/work/") },
       ...projects.map((p) => ({
         id: `p-${p.slug}`,
@@ -76,13 +73,6 @@ export function CommandPalette() {
         icon: <AtSign size={15} />,
         run: () => (window.location.href = `mailto:${profile.email}`),
       },
-      {
-        id: "a-theme",
-        group: "Actions",
-        label: "Toggle light / dark theme",
-        icon: <SunMoon size={15} />,
-        run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
-      },
       ...profile.socials.map((s) => ({
         id: `a-${s.label}`,
         group: "Actions" as const,
@@ -92,7 +82,7 @@ export function CommandPalette() {
         run: () => window.open(s.href, "_blank", "noopener"),
       })),
     ];
-  }, [router, resolvedTheme, setTheme]);
+  }, [router]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

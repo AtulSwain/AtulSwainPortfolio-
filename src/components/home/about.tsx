@@ -1,83 +1,63 @@
-import { BarChart3, Code2, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Hammer, Lightbulb, Share2, TrendingUp } from "lucide-react";
 import { profile } from "@/content/profile";
 import { SectionHeading } from "../ui/section-heading";
 
-const icons = [Code2, Sparkles, BarChart3];
+const pillarIcons = [Hammer, Lightbulb, Share2, TrendingUp];
 
 export function About() {
   return (
-    <section id="about" className="container-page py-16 md:py-24">
-      {/* Stats */}
-      <dl className="panel reveal grid grid-cols-2 divide-line md:grid-cols-4 md:divide-x">
-        {profile.stats.map((s, i) => (
-          <div key={s.label} className={i < 2 ? "border-b border-line p-6 md:border-b-0 md:p-8" : "p-6 md:p-8"}>
-            <dd className="display text-[clamp(36px,4vw,52px)]">{s.value}</dd>
-            <dt className="mt-2 text-[13px] text-fg-3">{s.label}</dt>
-          </div>
-        ))}
-      </dl>
-
-      <div className="mt-24 grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+    <section id="about" className="container-page py-16 md:py-20">
+      <div className="grid gap-12 lg:grid-cols-[1fr_1fr_0.9fr] lg:gap-10">
+        {/* Story */}
         <div>
-          <SectionHeading label="About me" title="Curious builder, honest numbers." />
-          <div className="reveal mt-8 space-y-5 text-[16.5px] leading-relaxed text-fg-2">
-            {profile.about.map((p, i) => (
-              <p key={i} className={i === 0 ? "text-[19px] leading-relaxed text-fg" : undefined}>
-                {p}
-              </p>
-            ))}
-          </div>
-          <dl className="reveal mt-8 grid grid-cols-2 gap-3">
-            {profile.facts.map((f) => (
-              <div key={f.label} className="rounded-2xl border border-line p-4">
-                <dt className="eyebrow">{f.label}</dt>
-                <dd className="mt-1.5 text-[14px]">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <SectionHeading label="About" title="More Than Just Code" />
+          <p className="reveal mt-5 text-[15px] leading-relaxed text-fg-2">{profile.about[0]}</p>
+          <p className="reveal mt-4 text-[15px] leading-relaxed text-fg-2">{profile.about[2]}</p>
+          <Link href="/#journey" className="btn btn-ghost reveal group mt-7 h-11 text-[13.5px]">
+            Know More About Me <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
-        <div className="lg:pt-24">
-          <p className="eyebrow reveal">How I work</p>
-          <ol className="mt-5 grid gap-3 sm:grid-cols-2">
-            {profile.principles.map((p, i) => (
-              <li key={p.title} className="panel spotlight reveal p-6">
-                <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
-                <h3 className="mt-3 font-display text-[19px] font-semibold tracking-tight">{p.title}</h3>
-                <p className="mt-2 text-[14.5px] leading-relaxed text-fg-2">{p.body}</p>
-              </li>
-            ))}
-          </ol>
-          <figure className="reveal mt-3 rounded-[20px] border border-line bg-bg-sunk p-6">
-            <blockquote className="font-display text-[22px] leading-snug font-medium tracking-tight">“{profile.pullQuote}”</blockquote>
-          </figure>
-        </div>
-      </div>
-
-      {/* Services */}
-      <div className="mt-24">
-        <SectionHeading label="What I do" title="Three things I’m good at" />
-        <ul className="mt-10 grid gap-4 md:grid-cols-3">
-          {profile.services.map((s, i) => {
-            const Icon = icons[i % icons.length];
+        {/* Pillars */}
+        <ol className="relative lg:pt-12">
+          <span aria-hidden className="absolute top-5 bottom-5 left-[19px] border-l border-dashed border-line-strong lg:top-16" />
+          {profile.pillars.map((p, i) => {
+            const Icon = pillarIcons[i % pillarIcons.length];
             return (
-              <li key={s.title} className="panel spotlight reveal flex flex-col p-7">
-                <span className="grid size-11 place-items-center rounded-xl border border-line bg-bg-sunk text-accent">
-                  <Icon size={20} strokeWidth={1.7} />
+              <li key={p.title} className="reveal group relative flex items-start gap-4 py-3">
+                <span className="relative grid size-10 shrink-0 place-items-center rounded-full border border-accent/40 bg-bg text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-accent-ink">
+                  <Icon size={16} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-6 font-display text-[22px] font-semibold tracking-tight">{s.title}</h3>
-                <p className="mt-2.5 text-[15px] leading-relaxed text-fg-2">{s.body}</p>
-                <ul className="mt-auto flex flex-wrap gap-1.5 pt-6">
-                  {s.tools.map((t) => (
-                    <li key={t} className="rounded-full bg-bg-sunk px-2.5 py-1 text-[12px] text-fg-2">
-                      {t}
-                    </li>
-                  ))}
-                </ul>
+                <span className="pt-0.5">
+                  <span className="block font-display text-[15.5px] font-semibold tracking-tight">{p.title}</span>
+                  <span className="mt-0.5 block text-[13.5px] text-fg-2">{p.body}</span>
+                </span>
               </li>
             );
           })}
-        </ul>
+        </ol>
+
+        {/* Quote */}
+        <figure className="reveal relative flex min-h-[260px] items-center overflow-hidden rounded-[18px] border border-line p-8 lg:mt-12">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10"
+            style={{
+              background:
+                "radial-gradient(80% 60% at 85% 15%, rgb(255 255 255 / 0.10), transparent 60%), radial-gradient(60% 80% at 10% 100%, rgb(200 240 74 / 0.08), transparent 70%), linear-gradient(160deg, #161617, #0a0a0b)",
+            }}
+          />
+          <svg aria-hidden className="absolute inset-0 -z-10 size-full opacity-[0.07]" viewBox="0 0 200 200" preserveAspectRatio="none">
+            {Array.from({ length: 14 }).map((_, i) => (
+              <path key={i} d={`M0 ${20 + i * 13} C 60 ${i * 13}, 120 ${40 + i * 13}, 200 ${10 + i * 13}`} stroke="#fff" fill="none" strokeWidth="0.6" />
+            ))}
+          </svg>
+          <div>
+            <blockquote className="font-display text-[19px] leading-snug font-medium tracking-tight">“{profile.aboutQuote}”</blockquote>
+            <span className="mt-5 block h-px w-10 bg-fg-3" />
+          </div>
+        </figure>
       </div>
     </section>
   );

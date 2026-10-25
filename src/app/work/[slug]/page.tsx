@@ -8,7 +8,7 @@ import { existing, publicFileExists } from "@/lib/assets";
 import { asset, pad } from "@/lib/utils";
 import { ProjectCover } from "@/components/ui/project-cover";
 import { PagerKeys } from "@/components/work/pager-keys";
-import { BrowserFrame } from "@/components/ui/browser-frame";
+import { OtakuvaPreview } from "@/components/home/otakuva-preview";
 
 export const dynamicParams = false;
 
@@ -50,7 +50,7 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <article className="relative pt-32 pb-16 md:pt-36">
-      <div className="backdrop" aria-hidden />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(60%_60%_at_50%_0%,rgb(200_240_74/0.08),transparent_70%)]" />
       <div className="container-page">
       <PagerKeys prev={`/work/${prev.slug}/`} next={`/work/${next.slug}/`} />
 
@@ -72,9 +72,10 @@ export default async function ProjectPage({ params }: Props) {
       {/* Title + spec sheet */}
       <header className="mt-10 grid gap-10 lg:grid-cols-12">
         <div className="enter enter-1 lg:col-span-7">
-          <p className="pill"><span className="size-1.5 rounded-full bg-accent" />{project.category} · {project.year}</p>
-          <h1 className="display mt-6 text-[clamp(48px,7vw,96px)]">{project.title}</h1>
-          <p className="mt-5 text-[clamp(20px,2vw,26px)] leading-snug text-fg-2">{project.tagline}</p>
+          <p className="eyebrow"><span className="text-accent">//</span> {project.category} · {project.year}</p>
+          <h1 className="display silver mt-5 pb-1 text-[clamp(44px,6.5vw,88px)]">{project.title}</h1>
+          <p className="mt-4 text-[clamp(18px,1.8vw,24px)] leading-snug text-accent">{project.tagline}</p>
+          {project.status && <p className="mt-4 text-[13px] text-fg-3">{project.status}</p>}
         </div>
 
         <aside className="panel enter enter-2 self-end p-6 lg:col-span-5">
@@ -92,7 +93,7 @@ export default async function ProjectPage({ params }: Props) {
                 href={project.links.live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex h-10 items-center gap-2 rounded-full bg-fg px-4 text-[13.5px] font-medium text-bg"
+                className="btn btn-light group h-10 text-[13.5px]"
               >
                 Visit live site <ArrowUpRight size={14} className="transition-transform group-hover:rotate-45" />
               </a>
@@ -102,7 +103,7 @@ export default async function ProjectPage({ params }: Props) {
                 href={project.links.code}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-[13.5px] font-medium hover:border-fg"
+                className="btn btn-ghost h-10 text-[13.5px]"
               >
                 Source code <ArrowUpRight size={14} />
               </a>
@@ -118,9 +119,13 @@ export default async function ProjectPage({ params }: Props) {
           className="pointer-events-none absolute -inset-x-10 -inset-y-10 -z-10 opacity-70 blur-2xl"
           style={{ background: `radial-gradient(60% 50% at 50% 50%, ${project.palette[1]}40, transparent 70%)` }}
         />
-        <BrowserFrame url={project.links.live ?? project.links.code} className="shadow-2xl">
-          <ProjectCover project={project} src={cover} detailed className="aspect-[16/10]" sizes="(min-width: 1200px) 1120px, 100vw" priority />
-        </BrowserFrame>
+        <div className="overflow-hidden rounded-[16px] border border-line-strong shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)]">
+          {cover || project.slug !== "otakuva" ? (
+            <ProjectCover project={project} src={cover} detailed className="aspect-[16/10]" sizes="(min-width: 1200px) 1120px, 100vw" priority />
+          ) : (
+            <OtakuvaPreview />
+          )}
+        </div>
       </div>
 
       {/* Summary + metrics */}
@@ -130,7 +135,7 @@ export default async function ProjectPage({ params }: Props) {
           <dl className="grid grid-cols-3 gap-px self-start overflow-hidden rounded-2xl border border-line bg-line lg:col-span-5">
             {project.metrics.map((m) => (
               <div key={m.label} className="bg-bg-elev p-5">
-                <dd className="display text-[44px] leading-none gradient-text">{m.value}</dd>
+                <dd className="display text-[40px] leading-none text-accent">{m.value}</dd>
                 <dt className="mt-2 text-[12px] leading-snug text-fg-3">{m.label}</dt>
               </div>
             ))}

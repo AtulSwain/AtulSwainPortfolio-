@@ -13,14 +13,14 @@ export default function WorkPage() {
 
   return (
     <div className="relative pt-32 pb-24 md:pt-40">
-      <div className="backdrop" aria-hidden />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(60%_60%_at_50%_0%,rgb(200_240_74/0.08),transparent_70%)]" />
       <div className="container-page">
         <header className="enter">
-          <p className="pill">
-            <span className="size-1.5 rounded-full bg-accent" /> Archive · {projects.length} projects
+          <p className="eyebrow">
+            <span className="text-accent">//</span> Archive · {projects.length} projects
           </p>
-          <h1 className="display mt-6 text-[clamp(48px,7vw,88px)]">
-            Everything I’ve <span className="gradient-text">built</span>
+          <h1 className="display mt-4 text-[clamp(44px,6.5vw,84px)]">
+            <span className="silver">Everything I’ve</span> <span className="text-accent">built</span>
           </h1>
           <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-fg-2">
             From my first CSS page to production software. Filter by type, or switch between grid and list.
